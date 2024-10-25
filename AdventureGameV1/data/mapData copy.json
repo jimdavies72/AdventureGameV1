@@ -1,0 +1,41 @@
+{
+  "Rooms": [
+    {
+      "Id": 0,
+      "Name": "The Mighty Gate",
+      "Description": "You stand before the mighty gate of the uberworld",
+      "Exits": [
+        {
+          "Direction": "N",
+          "ToRoomId": 1
+        }
+      ]
+    },
+    {
+      "Id": 1,
+      "Name": "The Long Road",
+      "Description": "You are travelling along the long road of adventure",
+      "Exits": [
+        {
+          "Direction": "N",
+          "ToRoomId": 2
+        },
+        {
+          "Direction": "S",
+          "ToRoomId": 0
+        }
+      ]
+    },
+    {
+      "Id": 2,
+      "Name": "The Drawbridge",
+      "Description": "You stand before the drawbridge to the Keep of the Dead",
+      "Exits": [
+        {
+          "Direction": "S",
+          "ToRoomId": 1
+        }
+      ]
+    }
+  ]
+}
