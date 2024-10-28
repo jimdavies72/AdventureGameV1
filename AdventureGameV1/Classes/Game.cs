@@ -5,60 +5,75 @@ namespace AdventureGameV1.Classes
 {
   public class Game 
   {
-    public string Filename {get; set;}
     public bool LoadState {get; set;}
-    public Map Map {get; init;}
-    private Room currentLocation = new Room(-1, "The Void", "There is nothing here.");
+    public Map GameMap {get; set;}
+    public Room CurrentLocation {get; set;}
+    public CommandSet GameCommands {get; set;}
 
-    public Game(string fileName)
+    public Game(string mapDataFilename, string commandSetFilename)
     // construct the game environment
     {
-      LoadState = false;
-      Filename = fileName;
-      Map = new Map();
+      CurrentLocation = new Room(-1, "The Void", "There is nothing here.");
+      GameMap = new Map();
+      LoadState = LoadMap(mapDataFilename);
 
-      try 
+      GameCommands = new CommandSet();
+      LoadState = LoadCommands(commandSetFilename);
+    }
+
+    private bool LoadMap(string filename)
+    {
+      try
       {
-        if (GetMapData(Filename, out string jsonString))
+        if (GetData(filename, out string jsonString))
         {
-          Map = JsonSerializer.Deserialize<Map>(jsonString)!;
-          if (Map.Rooms.Count > 0)
+          GameMap = JsonSerializer.Deserialize<Map>(jsonString)!;
+          if (GameMap.Rooms.Count > 0)
           {
-            LoadState = true;
             //set starting position
-            if (Map.FindRoomInList(0, Map.Rooms, out Room room))
+            if (GameMap.FindRoomInList(0, GameMap.Rooms, out Room room))
             {
               CurrentLocation = room;
             }
           }
+          return true;
         }
-      } catch {
-        LoadState = false;
+        return false;
       }
-      
+      catch
+      {
+        return false;
+      }
     }
 
-    public Room CurrentLocation
+    private bool LoadCommands(string filename)
     {
-      get
+      try
       {
-        return currentLocation;
-      }
-
-      set
+        if (GetData(filename, out string jsonString))
+        {
+          GameCommands = JsonSerializer.Deserialize<CommandSet>(jsonString)!;
+          if (GameCommands.Commands.Count > 0)
+          {
+            return true;
+          }
+        }
+        return false;
+      } catch
       {
-        currentLocation = value;
+        return false;
       }
     }
 
-    static bool GetMapData(string fileName,out string jsonString)
+    static bool GetData(string fileName,out string jsonString)
     {
       try
       {
         jsonString = File.ReadAllText(fileName);
         return true;
 
-      } catch  {
+      } catch (Exception e)  {
+        Console.WriteLine("Exception: " + e.Message);
         jsonString = string.Empty;
         return false;
       }

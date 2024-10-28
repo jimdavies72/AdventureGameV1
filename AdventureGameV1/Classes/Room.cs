@@ -9,6 +9,7 @@ namespace AdventureGameV1.Classes
     private int id;
     private string name = "";
     private string description = "";
+    public List<Item> Items { get; set; }
 
     public int Id
     {
@@ -36,6 +37,7 @@ namespace AdventureGameV1.Classes
       Name = name;
       Description = description;
       Exits = new List<Exit>();
+      Items = new List<Item>(); 
     }
 
     public override string ToString()

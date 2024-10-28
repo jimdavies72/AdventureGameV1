@@ -1,0 +1,28 @@
+{
+  "Commands":[
+    {
+      "CommandText": "north",
+      "ShortCommandText": "n"
+    },
+    {
+      "CommandText": "south",
+      "ShortCommandText": "s"
+    },
+    {
+      "CommandText": "east",
+      "ShortCommandText": "e"
+    },
+    {
+      "CommandText": "west",
+      "ShortCommandText": "w"
+    },
+    {
+      "CommandText": "quit",
+      "ShortCommandText": "q"
+    },
+    {
+      "CommandText": "help",
+      "ShortCommandText": "?"
+    }
+  ]
+}

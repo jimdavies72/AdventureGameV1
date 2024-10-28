@@ -1,5 +1,5 @@
-﻿using System.Data;
-using AdventureGameV1.Classes;
+﻿using AdventureGameV1.Classes;
+using System.Configuration;
 
 namespace AdventureGameV1;
 
@@ -7,23 +7,27 @@ class Program
 {
   static void Main(string[] args)
   {
-    Game game = new Game("data/mapData.json"); //bin/data/mapData.json
-    
-    if (game.LoadState)
+    string dataPath = ConfigurationManager.AppSettings.Get("dataPath") ?? "";
+    if (!string.IsNullOrEmpty(dataPath))
     {
-      string command = "";
-      
-      Console.Clear();
-      Console.WriteLine(game.CurrentLocation);
-
-      do
+      Game game = new Game($"{dataPath}data/mapData.json", $"{dataPath}data/commandSetData.json");
+      if (game.LoadState)
       {
-        Console.Write("> ");
-        command = Console.ReadLine()!;
-        Console.WriteLine("you entered: " + command);
-      } while (command != "quit");
+        string command = "";
+        Console.Clear();
+        Console.WriteLine(game.CurrentLocation);
+
+        do
+        {
+          Console.Write("> ");
+          command = Console.ReadLine()!.ToLower();
+          Console.WriteLine("you entered: " + command);
+        } while (command != "quit");
+      } else {
+        Console.WriteLine("Game failed to load");
+      }
     } else {
-      Console.WriteLine("Game failed to load");
+      Console.WriteLine("Path to data not found in app.config");
     }
   }
 }
