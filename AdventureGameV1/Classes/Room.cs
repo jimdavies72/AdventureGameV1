@@ -42,7 +42,7 @@ namespace AdventureGameV1.Classes
 
     public override string ToString()
     {
-      string description = $"Id: {Id} - Name: {Name}\nDescription: {Description}\nExits are: {string.Join(", ", Exits)}";
+      string description = $"Id: {Id} - Name: {Name}\nDescription: {Description}\nExits are: {string.Join(", ", Exits)}\n";
       
       return description;
     }

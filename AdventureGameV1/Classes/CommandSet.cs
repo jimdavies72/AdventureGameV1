@@ -10,13 +10,21 @@ namespace AdventureGameV1.Classes
       Commands = new List<Command>();
     }
 
-    public bool ParseCommand(string commandText)
+    public bool ConfirmCommand(string commandText, out string commandType)
     {
+      commandType = "";
+
+      if (string.IsNullOrEmpty(commandText))
+      {
+        return false;
+      }
+
       for (int i = 0; i < Commands.Count; i++){
-        if (Commands[i].CommandText.Equals(commandText.ToLower()))
+        if (Commands[i].CommandText.Equals(commandText) || Commands[i].ShortCommandText.Equals(commandText))
         {
+          commandType = Commands[i].CommandType;
           return true;
-        }
+        } 
       }
 
       return false;

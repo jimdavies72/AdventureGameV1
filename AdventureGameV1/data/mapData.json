@@ -21,6 +21,10 @@
           "ToRoomId": 2
         },
         {
+          "Direction": "E",
+          "ToRoomId": 3
+        },
+        {
           "Direction": "S",
           "ToRoomId": 0
         }
@@ -33,6 +37,17 @@
       "Exits": [
         {
           "Direction": "S",
+          "ToRoomId": 1
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "Name": "The Wall of the Dead",
+      "Description": "You stand at the wall of the Dead. Beyond the wall is the lair of the Tree Snaffelling Gargoyle and its wife the Crony Old Witch",
+      "Exits": [
+        {
+          "Direction": "W",
           "ToRoomId": 1
         }
       ]

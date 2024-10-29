@@ -1,27 +1,40 @@
 ﻿using AdventureGameV1.Classes;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace AdventureGameV1;
 
 class Program
 {
-  static void Main(string[] args)
+
+static void Main(string[] args)
   {
-    string dataPath = ConfigurationManager.AppSettings.Get("dataPath") ?? "";
+
+    // TODO: Cant get this to work. will set aside for now as it is driving me crazy
+    // IConfigurationRoot config = new ConfigurationBuilder()
+    //   .AddJsonFile("appsettings.json")
+    //   .Build();
+    //string dataPath = config.GetSection("dataPath").Value ?? string.Empty;
+
+    string dataPath = "C:\\Users\\jimda\\dev\\c-sharp\\AdventureGameV1\\adventureGameV1\\data\\";
     if (!string.IsNullOrEmpty(dataPath))
     {
-      Game game = new Game($"{dataPath}data/mapData.json", $"{dataPath}data/commandSetData.json");
+      Game game = new Game($"{dataPath}mapData.json", $"{dataPath}commandSetData.json");
       if (game.LoadState)
       {
         string command = "";
         Console.Clear();
-        Console.WriteLine(game.CurrentLocation);
+        Console.WriteLine(game.player.CurrentLocation);
 
         do
         {
           Console.Write("> ");
           command = Console.ReadLine()!.ToLower();
-          Console.WriteLine("you entered: " + command);
+          if (command.Length > 0)
+          {
+            game.ParseCommand(command, out string response);
+            Console.WriteLine(response);
+          }
         } while (command != "quit");
       } else {
         Console.WriteLine("Game failed to load");

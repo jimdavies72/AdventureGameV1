@@ -2,27 +2,33 @@
   "Commands":[
     {
       "CommandText": "north",
-      "ShortCommandText": "n"
+      "ShortCommandText": "n",
+      "CommandType": "move"
     },
     {
       "CommandText": "south",
-      "ShortCommandText": "s"
+      "ShortCommandText": "s",
+      "CommandType": "move"
     },
     {
       "CommandText": "east",
-      "ShortCommandText": "e"
+      "ShortCommandText": "e",
+      "CommandType": "move"
     },
     {
       "CommandText": "west",
-      "ShortCommandText": "w"
+      "ShortCommandText": "w",
+      "CommandType": "move"
     },
     {
       "CommandText": "quit",
-      "ShortCommandText": "q"
+      "ShortCommandText": "q",
+      "CommandType": "game"
     },
     {
       "CommandText": "help",
-      "ShortCommandText": "?"
+      "ShortCommandText": "?",
+      "CommandType": "game"
     }
   ]
 }

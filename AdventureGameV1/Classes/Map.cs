@@ -11,15 +11,17 @@ namespace AdventureGameV1.Classes
 
     public bool FindRoomInList(int roomId, List<Room> rooms, out Room room)
     {
-      
       room = new Room(default, string.Empty, string.Empty);
 
-      for (int i = 0; i < rooms.Count; i++)
+      if (rooms.Count > 0)
       {
-        if (rooms[i].Id == roomId)
+        for (int i = 0; i < rooms.Count; i++)
         {
-          room = rooms[i];
-          return true;
+          if (rooms[i].Id == roomId)
+          {
+            room = rooms[i];
+            return true;
+          }
         }
       }
 
