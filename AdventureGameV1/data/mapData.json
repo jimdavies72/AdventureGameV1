@@ -9,6 +9,14 @@
           "Direction": "N",
           "ToRoomId": 1
         }
+      ],
+      "Items": [
+        {
+          "Id": 0,
+          "Name": "Key",
+          "Description": "The key to the Keep of the Dead",
+          "IsVisible": true
+        }
       ]
     },
     {
@@ -28,6 +36,20 @@
           "Direction": "S",
           "ToRoomId": 0
         }
+      ],
+      "Items": [
+        {
+          "Id": 1,
+          "Name": "Food",
+          "Description": "Sustainance for the long journey ahead",
+          "IsVisible": true
+        },
+        {
+          "Id": 2,
+          "Name": "Poison",
+          "Description": "Gargoyle sleepy go bye-bye drink",
+          "IsVisible": true
+        }
       ]
     },
     {
@@ -44,11 +66,19 @@
     {
       "Id": 3,
       "Name": "The Wall of the Dead",
-      "Description": "You stand at the wall of the Dead. Beyond the wall is the lair of the Tree Snaffelling Gargoyle and its wife the Crony Old Witch",
+      "Description": "You stand at the wall of the Dead.\nBeyond the wall is the lair of the Tree Snaffelling Gargoyle and its wife the Crony Old Witch",
       "Exits": [
         {
           "Direction": "W",
           "ToRoomId": 1
+        }
+      ],
+      "Items": [
+        {
+          "Id": 4,
+          "Name": "Axe",
+          "Description": "Sturdy axe for cutting trees",
+          "IsVisible": false
         }
       ]
     }

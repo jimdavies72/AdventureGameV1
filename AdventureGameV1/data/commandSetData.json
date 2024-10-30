@@ -29,6 +29,26 @@
       "CommandText": "help",
       "ShortCommandText": "?",
       "CommandType": "game"
+    },
+    {
+      "CommandText": "inventory",
+      "ShortCommandText": "inv",
+      "CommandType": "game"
+    },
+    {
+      "CommandText": "look",
+      "ShortCommandText": "look",
+      "CommandType": "game"
+    },
+    {
+      "CommandText": "get",
+      "ShortCommandText": "get",
+      "CommandType": "action"
+    },
+    {
+      "CommandText": "drop",
+      "ShortCommandText": "drop",
+      "CommandType": "action"
     }
   ]
 }

@@ -1,6 +1,6 @@
 
+
 using System.Text.Json;
-using System.Text.RegularExpressions;
 
 namespace AdventureGameV1.Classes
 {
@@ -8,9 +8,8 @@ namespace AdventureGameV1.Classes
   {
     public bool LoadState {get; set;}
     public Map GameMap {get; set;}
-    //public Room CurrentLocation {get; set;}
     public CommandSet GameCommands {get; set;}
-    public Person player {get; set;}
+    public Person Player {get; set;}
 
     public Game(string mapDataFilename, string commandSetFilename)
     // construct the game environment
@@ -21,23 +20,22 @@ namespace AdventureGameV1.Classes
       GameCommands = new CommandSet();
       LoadState = LoadCommands(commandSetFilename);
 
-      // create person with  name and starting location
+      // create person with name and starting location
       if (GameMap.FindRoomInList(0, GameMap.Rooms, out Room room))
       {
-        player = new Person("Player", room);
+        Player = new Person("Player", room);
       } else
       {
-        player = null!;
+        Player = null!;
         LoadState = false;
       }
-
     }
 
     private bool LoadMap(string filename)
     {
       try
       {
-        if (GetData(filename, out string jsonString))
+        if (Data.GetData(filename, out string jsonString))
         {
           GameMap = JsonSerializer.Deserialize<Map>(jsonString)!;
           return true;
@@ -54,7 +52,7 @@ namespace AdventureGameV1.Classes
     {
       try
       {
-        if (GetData(filename, out string jsonString))
+        if (Data.GetData(filename, out string jsonString))
         {
           GameCommands = JsonSerializer.Deserialize<CommandSet>(jsonString)!;
           if (GameCommands.Commands.Count > 0)
@@ -71,63 +69,118 @@ namespace AdventureGameV1.Classes
 
     public bool ParseCommand(string commandText, out string response)
     {
+      Console.WriteLine();
       response = string.Empty;
-      if (commandText.Length == 0)
+      if (commandText.Length.Equals(0))
       {
+        Console.WriteLine("... nothing happens ...\n");
         return false;
       }
 
-      commandText = Regex.Replace(commandText.ToLower(), @"\s+", string.Empty);
-      var commandList = commandText.Split(" ").ToList();
-      
+      var commandList = commandText.ToLower().Trim().Split(" ").ToList(); 
+      var success = true;
+
       if (GameCommands.ConfirmCommand(commandList[0], out string commandType))
       {
-        // command found
-        if (commandType == "move")
+        switch (commandType)
         {
-          foreach (var exit in player.CurrentLocation.Exits)
-          {
-            if (exit.Direction.ToLower().Equals(commandList[0]))
-            {
-              Move(exit.ToRoomId);
-            }
-          }  
-        } else
-        {
-          Console.WriteLine($"Some other command type: {commandType}");
+          case "move":
+            MoveCommand(commandList[0]);
+            break;
+          case "game":
+            GameCommand(commandList[0]);
+            break;
+          case "action":
+            ActionCommand(commandList[0], commandList[1]);
+            break;
+          default: 
+            Console.WriteLine($"Some other command type: {commandType}");
+            break;
         }
-        return true;
       } else
       {
         // no matching command found
         response = "I don't understand that command. Please try again.\n";
-        return false;
+        success = false;
       }
+      return success;
     }
 
     private bool Move(int roomId)
     {
       if (GameMap.FindRoomInList(roomId, GameMap.Rooms, out Room room))
       {
-        player.CurrentLocation = room;
-        Console.WriteLine(player.CurrentLocation);
+        Player.CurrentLocation = room;
+        Console.WriteLine(Player.CurrentLocation);
         return true;
       }
 
       return false;
     }
 
-    static bool GetData(string fileName,out string jsonString)
+    private void MoveCommand(string commandText)
     {
-      try
+      foreach (var exit in Player.CurrentLocation.Exits)
       {
-        jsonString = File.ReadAllText(fileName);
-        return true;
+        if (exit.Direction.ToLower().Equals(commandText))
+        {
+          Move(exit.ToRoomId);
+        }
+      }
+    }
 
-      } catch (Exception e)  {
-        Console.WriteLine("Exception: " + e.Message);
-        jsonString = string.Empty;
-        return false;
+    private void GameCommand(string commandText)
+    {
+      if (commandText.ToLower().Equals("inventory") || commandText.ToLower().Equals("inv"))
+      {
+        Player.ListInventory();
+      } else if (commandText.ToLower().Equals("look"))
+      {
+        try
+        {
+          Console.Clear();
+        } catch (IOException)
+        {
+        }
+
+        Console.WriteLine(Player.CurrentLocation);
+      } else if (commandText.ToLower().Equals("help") || commandText.ToLower().Equals("?"))
+      {
+        Console.WriteLine(GameCommands);
+      }
+    }
+
+    private void ActionCommand(string commandText, string itemText = "")
+    {
+      if (commandText.ToLower().Equals("get"))
+      {
+        var itemToPickUp = Player.CurrentLocation.Items.FirstOrDefault(i => i.Name.ToLower().Equals(itemText));
+        if (itemToPickUp != null)
+        {
+          if (Player.PickUpItem(itemToPickUp)){
+            Console.WriteLine($"You picked up the {itemToPickUp.Name}");
+          } else
+          {
+            Console.WriteLine($"I cannot pick up the item {itemText} as you are carrying the maximum number of items in your inventory already");
+          }
+        }
+        else
+        {
+          Console.WriteLine($"I cannot see the item {itemText}");
+        }
+      }
+      else if (commandText.ToLower().Equals("drop"))
+      {
+        var itemToDrop = Player.Inventory.Items.FirstOrDefault(i => i.Name.ToLower().Equals(itemText));
+        if (itemToDrop != null)
+        {
+          Player.DropItem(itemToDrop);
+          Console.WriteLine($"You dropped the {itemToDrop.Name}");
+        }
+        else
+        {
+          Console.WriteLine($"I do not have the item {itemText}");
+        }
       }
     }
   }

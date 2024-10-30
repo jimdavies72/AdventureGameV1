@@ -15,14 +15,20 @@ namespace AdventureGameV1.Classes
 
       if (rooms.Count > 0)
       {
-        for (int i = 0; i < rooms.Count; i++)
+        var foundRoom = rooms.Find(x => x.Id == roomId);
+        if (foundRoom != null)
         {
-          if (rooms[i].Id == roomId)
-          {
-            room = rooms[i];
-            return true;
-          }
+          room = foundRoom;
+          return true;
         }
+        // for (int i = 0; i < rooms.Count; i++)
+        // {
+        //   if (rooms[i].Id == roomId)
+        //   {
+        //     room = rooms[i];
+        //     return true;
+        //   }
+        // }
       }
 
       return false;

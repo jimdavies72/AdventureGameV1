@@ -14,7 +14,7 @@ namespace AdventureGameV1.Classes
     {
       commandType = "";
 
-      if (string.IsNullOrEmpty(commandText))
+      if (string.IsNullOrEmpty(commandText) || Commands.Count.Equals(0))
       {
         return false;
       }

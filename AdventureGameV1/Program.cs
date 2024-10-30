@@ -1,6 +1,4 @@
 ﻿using AdventureGameV1.Classes;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
 
 namespace AdventureGameV1;
 
@@ -22,9 +20,13 @@ static void Main(string[] args)
       Game game = new Game($"{dataPath}mapData.json", $"{dataPath}commandSetData.json");
       if (game.LoadState)
       {
+        try {
+          Console.Clear();
+        } catch (IOException ) {
+        }
+
         string command = "";
-        Console.Clear();
-        Console.WriteLine(game.player.CurrentLocation);
+        Console.WriteLine(game.Player.CurrentLocation);
 
         do
         {
